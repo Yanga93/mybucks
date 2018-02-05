@@ -1,6 +1,14 @@
-function getDelayForHour(day, month, year, hour, massiveJson) {
-  // return a single number of seconds
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
 
+function getDelayForHour(day, month, year, hour, massiveJson) {
+
+  var openingDateTime = pad(year,4)+"/"+pad(month,2)+"/"+pad(day,2)+" "+pad(hour,2)+":00:00";
+  console.log(openingDateTime);
+  return;
   for (var i = 0; i < hourData.length; i++) {
 
     if (hourData) {
@@ -32,3 +40,5 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   }
 
 }
+
+getDelayForHour(1,12,2017,3,"");

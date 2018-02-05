@@ -19,17 +19,6 @@ undefined
 > (date2.getTime() - date1.getTime())/1000
 1082
 > var dateStr = “2017-12-23 19:00:00"
-SyntaxError: Unexpected token ILLEGAL
-    at Object.exports.createScript (vm.js:24:10)
-    at REPLServer.defaultEval (repl.js:225:25)
-    at bound (domain.js:287:14)
-    at REPLServer.runBound [as eval] (domain.js:300:12)
-    at REPLServer.<anonymous> (repl.js:417:12)
-    at emitOne (events.js:82:20)
-    at REPLServer.emit (events.js:169:7)
-    at REPLServer.Interface._onLine (readline.js:210:10)
-    at REPLServer.Interface._line (readline.js:549:8)
-    at REPLServer.Interface._ttyWrite (readline.js:826:14)
 > var dateStr = "2017-12-23 19:00:00"
 undefined
 > dateStr
