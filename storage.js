@@ -1,11 +1,11 @@
-
+function getDelayForHour(day, month, year, hour, massiveJson) {
   // return a single number of seconds
 
   for (var i = 0; i < hourData.length; i++) {
 
-       if (hourData) {
+    if (hourData) {
 
-       }
+    }
 
 
 
@@ -30,6 +30,5 @@
     //console.log(calculationInSec); // returns the correct value of 1803
     // console.log(getDatetime);
   }
-
 
 }

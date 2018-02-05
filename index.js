@@ -11,6 +11,8 @@ var hourDataArray = [];
 var openingDatetime = "2018\/01\/15 15:00:00";
 var closingDatetime = "2018\/01\/15 16:00:00";
 
+var combineDatetime = openingDatetime && closingDatetime;
+
 //set up express app
 const app = express();
 
@@ -30,33 +32,19 @@ function getDelayForHour() {
 }
 
 getDelayForHour();
-
-
-function checkArray() {
-  // var ID = document.getElementById('input2').value;
-  var checkOut = hourDataArray.includes("2018\/01\/15 15:00:00");
-    //console.log(checkOut);
-}
-checkArray();
-
 //console.log(hourDataArray);
 
+var findInArray = hourDataArray.find(elem => elem != openingDatetime && elem !=closingDatetime );
+hourDataArray.push(openingDatetime);
+hourDataArray.push(closingDatetime);
 
+// var sortArray = hourDataArray.sort(function(closingDatetime, openingDatetime) {
+//  var checkTheGreatest = openingDatetime - closingDatetime;
+ //console.log(checkTheGreatest);
 
-// Convert array to object
-// var convArrToObj = function(hourDataArray){
-//     var thisEleObj = new Object();
-//     if(typeof hourDataArray == "object"){
-//         for(var i in hourDataArray){
-//             var thisEle = convArrToObj(hourDataArray[i]);
-//             thisEleObj[i] = thisEle;
-//         }
-//     }else {
-//         thisEleObj = hourDataArray;
-//     }
-//     return thisEleObj;
-// }
-// convArrToObj();
+//console.log(sortArray);
+console.log(hourDataArray);
+
 
 
 //initialiaze routes
