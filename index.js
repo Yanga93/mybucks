@@ -1,76 +1,57 @@
 const express = require('express');
 const routes = require('./routes/api');
 var myBucksData = require('./MyBucksStats.json')
-var retrievedData = myBucksData;
-//console.log(retrievedData);
-
-var hourDataArray = [];
-
-
-
-var openingDatetime = "2018\/01\/15 08:00:00";
-// var closingDatetime = "2018\/01\/15 16:00:00";
-
-//var combineDatetime = openingDatetime && closingDatetime;
 
 //set up express app
 const app = express();
 
-function getDelayForHour() {
-  // return a single number of seconds
-
-  for (var i = 0; i < retrievedData.length; i++) {
-    var myData = retrievedData[i];
-    //console.log(myData);
-
-    if (myData < closingDatetime && myData > openingDatetime) {
-      hourDataArray.push(myData);
-    }
-
+myBucksData.sort(function(a, b) {
+  if (a.date < b.date) {
+    return -1
+  } else if (b.date < a.date) {
+    return 1
+  } else {
+    return 0
   }
-
-}
-
-//getDelayForHour();
-//console.log(hourDataArray);
-
-myBucksData.sort(function (a, b) {
-    if (a.date < b.date) {
-        return -1
-    } else if (b.date < a.date) {
-        return 1
-    } else {
-        return 0
-    }
 });
-console.log(myBucksData);
-for (var i = 0; i < myBucksData.length; i++){
-  if (myBucksData[i].date > openingDatetime){
-    console.log(myBucksData[i-1].date);
-    console.log(myBucksData[i-1].delay);
-    break;
-  }
+
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
-return;
 
+function getDelayForHour(day, month, year, hour, massiveJson) {
+  // return a single number of seconds
+  var currDatetime = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(hour, 2) + ":00:00";
+  console.log(currDatetime);
 
-var findInArray = hourDataArray.find(elem => elem != openingDatetime && elem !=closingDatetime );
-hourDataArray.push(openingDatetime);
-hourDataArray.push(closingDatetime);
+  for (var i = 0; i < myBucksData.length; i++) {
+    if (myBucksData[i].date > currDatetime) {
+      var prevDatetime = myBucksData[i - 1].date;
+      var prevDelay = myBucksData[i - 1].delay;
+    console.log(prevDatetime);
+    //  console.log(prevDelay);
 
-hourDataArray.sort(function (a, b) {
-    if (a < b) {
-        return -1
-    } else if (b < a) {
-        return 1
-    } else {
-        return 0
+    var date1 = new Date(currDatetime);
+    var date2 = new Date(prevDatetime);
+
+      //compute the difference between the datetime in seconds
+      var currDatetimeInMillSec = date1.getTime();
+      var prevDatetimeInMillSec = date2.getTime();
+      
+
+      var computeDiffInSec = (currDatetimeInMillSec - prevDatetimeInMillSec)/1000;
+      //console.log(computeDiffInSec);
+
+      break;
     }
-})
+  }
+  return;
 
-//console.log(sortArray);
-console.log(hourDataArray);
-
+}
+getDelayForHour(22, 12, 2017, 19, "");
+//2017/12/22 19:00:00
 
 
 //initialiaze routes

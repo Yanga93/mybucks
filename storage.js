@@ -6,7 +6,7 @@ function pad(n, width, z) {
 
 function getDelayForHour(day, month, year, hour, massiveJson) {
 
-  var openingDateTime = pad(year,4)+"/"+pad(month,2)+"/"+pad(day,2)+" "+pad(hour,2)+":00:00";
+  var openingDateTime = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(hour, 2) + ":00:00";
   console.log(openingDateTime);
   return;
   for (var i = 0; i < hourData.length; i++) {
@@ -37,8 +37,10 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
     //console.log(calculationInSec); // returns the correct value of 1803
     // console.log(getDatetime);
+
+
   }
 
 }
 
-getDelayForHour(1,12,2017,3,"");
+getDelayForHour(1, 12, 2017, 3, "");
