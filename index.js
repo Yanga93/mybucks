@@ -2,6 +2,8 @@ const express = require('express');
 const routes = require('./routes/api');
 var myBucksData = require('./MyBucksStats.json')
 
+var hourDataArray = [];
+
 //set up express app
 const app = express();
 
@@ -23,28 +25,59 @@ function pad(n, width, z) {
 
 function getDelayForHour(day, month, year, hour, massiveJson) {
   // return a single number of seconds
-  var currDatetime = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(hour, 2) + ":00:00";
-  console.log(currDatetime);
+  var myHour = pad(hour, 2) + ":00:00";
+//console.log(myHour.getHours());
+  //console.log(myHour); // returns => 19:00:00
+
+  var myDay = pad(day, 2);
+
+  var myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
+  //console.log(myDate); //returns => 2017/12/22
+
+  var currDatetime = myDate + " " + myHour;
+  //  console.log(currDatetime)returns =>  2017/12/22 19:00:00;
 
   for (var i = 0; i < myBucksData.length; i++) {
-    if (myBucksData[i].date > currDatetime) {
+    var getDatetime = myBucksData[i].date;
+    //console.log(getDatetime);
+    if (getDatetime > currDatetime) {
       var prevDatetime = myBucksData[i - 1].date;
       var prevDelay = myBucksData[i - 1].delay;
-    console.log(prevDatetime);
-    //  console.log(prevDelay);
+      //console.log(prevDatetime);
+      //  console.log(prevDelay);
 
-    var date1 = new Date(currDatetime);
-    var date2 = new Date(prevDatetime);
+      var date1 = new Date(currDatetime);
+      var date2 = new Date(prevDatetime);
 
       //compute the difference between the datetime in seconds
       var currDatetimeInMillSec = date1.getTime();
       var prevDatetimeInMillSec = date2.getTime();
-      
 
-      var computeDiffInSec = (currDatetimeInMillSec - prevDatetimeInMillSec)/1000;
+
+      var computeDiffInSec = (currDatetimeInMillSec - prevDatetimeInMillSec) / 1000;
       //console.log(computeDiffInSec);
 
       break;
+    }
+  }
+
+  for (var i = 0; i < myBucksData.length; i++) {
+    var convertMyBuckData = new Date(myBucksData[i].date);
+    //console.log(convertMyBuckData);//returns => Tue Jan 16 2018 13:28:02 GMT+0200 (SAST)
+
+    var getDay = (day == convertMyBuckData.getDate());
+    //console.log(getDay);
+    var getYear = (year == convertMyBuckData.getFullYear());
+    var getMonth = (month == (convertMyBuckData.getMonth()+1));
+    var getHour = (hour == convertMyBuckData.getHours());
+//    console.log(convertMyBuckData.getDate(), " ", convertMyBuckData.getFullYear(), " ",convertMyBuckData.getMonth()," ",convertMyBuckData.getHours());
+    if ( getDay && getYear &&  getMonth && getHour) {
+
+      hourDataArray.push(convertMyBuckData)
+
+      console.log(hourDataArray);
+    } else {
+//      console.log("Not the same datetime");
     }
   }
   return;

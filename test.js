@@ -52,3 +52,21 @@ var server = app.listen(35000, function() {
   console.log('Now listening for requests http://%s:%s', host, port);
 
 });
+
+
+
+
+
+
+
+// for (var i = 0; i < myBucksData.length; i++) {
+//   var convertMyBuckData = new Date(myBucksData[i].date);
+//   console.log(convertMyBuckData);
+//   var myBuckDataInMillSec = convertMyBuckData.getTime();
+//   if (currDatetimeInMillSec === myBuckDataInMillSec) {
+//     hourDataArray.push(myBuckDataInMillSec)
+//     //console.log("Same date and hour ");
+//   }else {
+//     //console.log("Not the same datetime");
+//   }
+// }
