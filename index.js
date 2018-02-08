@@ -63,10 +63,10 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     var getDatetime = myBucksData[i].date;
 //console.log(getDatetime);
     if (getDatetime > currDatetime) {
-      var prevDatetime = myBucksData[i -1].date;
+      var prevDatetime = myBucksData[i - 1].date;
       var prevDelay = myBucksData[i - 1].delay;
       hourDataArray.push({date: new Date(year,month-1,day,hour)  ,delay: prevDelay})
-      console.log(prevDatetime);
+      // console.log(prevDatetime);
       //  console.log(prevDelay);
 
       var date1 = new Date(currDatetime);
@@ -78,7 +78,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
 
       var computeDiffInSec = (currDatetimeInMillSec - prevDatetimeInMillSec) / 1000;
-      // console.log(computeDiffInSec);
+       //console.log(computeDiffInSec);
 
       break;
     }
@@ -92,7 +92,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     return 0
   }
 });
-//console.log(hourDataArray);
+console.log(hourDataArray);
 
   return;
 
