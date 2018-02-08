@@ -3,7 +3,6 @@ const routes = require('./routes/api');
 var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
-//console.log(hourDataArray);
 
 //set up express app
 const app = express();
@@ -36,36 +35,14 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   //console.log(myDate); //returns => 2017/12/22
 
   var currDatetime = myDate + " " + myHour;
-
   //  console.log(currDatetime)returns =>  2017/12/22 19:00:00;
-  for (var i = 0; i < myBucksData.length; i++) {
-    var convertMyBuckData = new Date(myBucksData[i].date);
-  //  console.log(convertMyBuckData);//returns => Tue Jan 16 2018 13:28:02 GMT+0200 (SAST)
-
-    var getDay = (day == convertMyBuckData.getDate());
-//    console.log(getDay);
-    var getYear = (year == convertMyBuckData.getFullYear());
-    var getMonth = (month == (convertMyBuckData.getMonth() + 1));
-    //console.log(getMonth);
-    var getHour = (hour == convertMyBuckData.getHours());
-    var isDatetimeMatch = (getDay && getYear && getMonth && getHour);
-  //   console.log(convertMyBuckData.getDate(), " ", convertMyBuckData.getFullYear(), " ",convertMyBuckData.getMonth()," ",convertMyBuckData.getHours());
-    if (isDatetimeMatch) {
-
-      hourDataArray.push({date: convertMyBuckData,delay: myBucksData[i].delay})
-      //console.log(hourDataArray);
-
-
-    }
-  }
 
   for (var i = 0; i < myBucksData.length; i++) {
     var getDatetime = myBucksData[i].date;
-//console.log(getDatetime);
+    //console.log(getDatetime);
     if (getDatetime > currDatetime) {
-      var prevDatetime = myBucksData[i -1].date;
+      var prevDatetime = myBucksData[i - 1].date;
       var prevDelay = myBucksData[i - 1].delay;
-      hourDataArray.push({date: new Date(year,month-1,day,hour)  ,delay: prevDelay})
       console.log(prevDatetime);
       //  console.log(prevDelay);
 
@@ -78,27 +55,34 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
 
       var computeDiffInSec = (currDatetimeInMillSec - prevDatetimeInMillSec) / 1000;
-      // console.log(computeDiffInSec);
+      console.log(computeDiffInSec);
 
       break;
     }
   }
-  hourDataArray.sort(function(a, b) {
-  if (a.date < b.date) {
-    return -1
-  } else if (b.date < a.date) {
-    return 1
-  } else {
-    return 0
-  }
-});
-//console.log(hourDataArray);
 
+  for (var i = 0; i < myBucksData.length; i++) {
+    var convertMyBuckData = new Date(myBucksData[i].date);
+    //console.log(convertMyBuckData);//returns => Tue Jan 16 2018 13:28:02 GMT+0200 (SAST)
+
+    var getDay = (day == convertMyBuckData.getDate());
+    console.log(getDay);
+    var getYear = (year == convertMyBuckData.getFullYear());
+    var getMonth = (month == (convertMyBuckData.getMonth() + 1));
+    var getHour = (hour == convertMyBuckData.getHours());
+    //    console.log(convertMyBuckData.getDate(), " ", convertMyBuckData.getFullYear(), " ",convertMyBuckData.getMonth()," ",convertMyBuckData.getHours());
+    if (getDay && getYear && getMonth && getHour) {
+
+      // console.log(hourDataArray);
+      hourDataArray.push(convertMyBuckData)
+      console.log(convertMyBuckData);
+
+    }
+  }
   return;
 
 }
 getDelayForHour(15, 01, 2018, 15, "");
-//2018/01/15 15:00:00
 //2017/12/22 19:00:00
 
 
@@ -107,7 +91,7 @@ app.use('/api', require("./routes/api").router);
 
 
 //start the serverce
-var server = app.listen(35000, function() {
+var server = app.listen(33000, function() {
 
   var host = server.address().address;
   var port = server.address().port;
