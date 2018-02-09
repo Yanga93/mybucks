@@ -27,73 +27,74 @@ function pad(n, width, z) {
 function getDelayForHour(day, month, year, hour, massiveJson) {
   // return a single number of seconds
   var myHour = pad(hour, 2) + ":00:00";
-  //console.log(myHour.getHours());
-  //console.log(myHour); // returns => 19:00:00
 
   var myDay = pad(day, 2);
 
   var myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
-  //console.log(myDate); //returns => 2017/12/22
 
   var currDatetime = myDate + " " + myHour;
 
-  //  console.log(currDatetime)returns =>  2017/12/22 19:00:00;
   for (var i = 0; i < myBucksData.length; i++) {
     var convertMyBuckData = new Date(myBucksData[i].date);
-  //  console.log(convertMyBuckData);//returns => Tue Jan 16 2018 13:28:02 GMT+0200 (SAST)
 
     var getDay = (day == convertMyBuckData.getDate());
-//    console.log(getDay);
+    //    console.log(getDay);
     var getYear = (year == convertMyBuckData.getFullYear());
     var getMonth = (month == (convertMyBuckData.getMonth() + 1));
     //console.log(getMonth);
     var getHour = (hour == convertMyBuckData.getHours());
     var isDatetimeMatch = (getDay && getYear && getMonth && getHour);
-  //   console.log(convertMyBuckData.getDate(), " ", convertMyBuckData.getFullYear(), " ",convertMyBuckData.getMonth()," ",convertMyBuckData.getHours());
     if (isDatetimeMatch) {
 
-      hourDataArray.push({date: convertMyBuckData,delay: myBucksData[i].delay})
-      //console.log(hourDataArray);
-
-
+      hourDataArray.push({
+        date: convertMyBuckData,
+        delay: myBucksData[i].delay
+      })
     }
   }
 
   for (var i = 0; i < myBucksData.length; i++) {
     var getDatetime = myBucksData[i].date;
-//console.log(getDatetime);
+    //console.log(getDatetime);
     if (getDatetime > currDatetime) {
       var prevDatetime = myBucksData[i - 1].date;
       var prevDelay = myBucksData[i - 1].delay;
-      hourDataArray.push({date: new Date(year,month-1,day,hour)  ,delay: prevDelay})
-      // console.log(prevDatetime);
-      //  console.log(prevDelay);
-
-      var date1 = new Date(currDatetime);
-      var date2 = new Date(prevDatetime);
-
-      //compute the difference between the datetime in seconds
-      var currDatetimeInMillSec = date1.getTime();
-      var prevDatetimeInMillSec = date2.getTime();
-
-
-      var computeDiffInSec = (currDatetimeInMillSec - prevDatetimeInMillSec) / 1000;
-       //console.log(computeDiffInSec);
-
+      hourDataArray.push({
+        date: new Date(year, month - 1, day, hour),
+        delay: prevDelay
+      })
       break;
     }
   }
   hourDataArray.sort(function(a, b) {
-  if (a.date < b.date) {
-    return -1
-  } else if (b.date < a.date) {
-    return 1
-  } else {
-    return 0
-  }
-});
-console.log(hourDataArray);
+    if (a.date < b.date) {
+      return -1
+    } else if (b.date < a.date) {
+      return 1
+    } else {
+      return 0
+    }
+  });
 
+  hourDataArray.reverse();
+  console.log(hourDataArray);
+  for (var i = 0; i < hourDataArray.length; i++) {
+    var myCurrData = hourDataArray[i].date;
+    //    console.log(myCurrData);
+    var currDatetimeConverted = new Date(currDatetime);
+    //console.log(currDatetimeConverted);
+
+    // if (myCurrData > currDatetimeConverted) {
+    //   var startDate = myCurrData[i];
+    //   console.log(startDate)
+    //
+    //   /***
+    //
+    //   ***/
+    //
+    // }
+
+  }
   return;
 
 }

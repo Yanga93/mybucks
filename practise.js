@@ -99,3 +99,23 @@ var server = app.listen(33000, function() {
   console.log('Now listening for requests http://%s:%s', host, port);
 
 });
+
+
+
+
+
+//var myCurrDataInMillSec = myCurrData.getTime();
+//  console.log(myCurrData);
+// console.log(hourDataArray[i - 1].date);
+//console.log(hourDataArray[i]);
+
+// var dt1 = myCurrData[1];
+// var dt2 = myCurrData[0];
+// console.log(dt1);
+// console.log(dt2);
+//
+// var dt1InMillSec = dt1.getTime();
+// var dt2InMillSec = dt2.getTime();
+//
+// var compueteResults = (dt1InMillSec - dt2InMillSec) / 1000;
+// console.log(compueteResults);
