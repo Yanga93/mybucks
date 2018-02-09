@@ -33,6 +33,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   var myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
 
   var currDatetime = myDate + " " + myHour;
+  //  console.log(new Date(currDatetime));
 
   for (var i = 0; i < myBucksData.length; i++) {
     var convertMyBuckData = new Date(myBucksData[i].date);
@@ -59,6 +60,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     if (getDatetime > currDatetime) {
       var prevDatetime = myBucksData[i - 1].date;
       var prevDelay = myBucksData[i - 1].delay;
+      //    console.log(prevDatetime);
       hourDataArray.push({
         date: new Date(year, month - 1, day, hour),
         delay: prevDelay
@@ -75,27 +77,80 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       return 0
     }
   });
-
   hourDataArray.reverse();
-  console.log(hourDataArray);
+
+  var currDatetimeConverted = new Date(currDatetime);
+
   for (var i = 0; i < hourDataArray.length; i++) {
     var myCurrData = hourDataArray[i].date;
-    //    console.log(myCurrData);
-    var currDatetimeConverted = new Date(currDatetime);
-    //console.log(currDatetimeConverted);
 
-    // if (myCurrData > currDatetimeConverted) {
-    //   var startDate = myCurrData[i];
-    //   console.log(startDate)
-    //
-    //   /***
-    //
-    //   ***/
-    //
-    // }
+    if (hourDataArray.length == 1){
+      // There is only one item in the array
+      var current =  hourDataArray[i].date;
+//      var previous =  hourDataArray[i - 1].date;
+//      var next = hourDataArray[i + 1].date;
 
-  }
-  return;
+    } elseif (i == 0) {
+      // I am at the start of the array and there is no previous item
+      var current =  hourDataArray[i].date;
+//      var previous =  hourDataArray[i - 1].date;
+      var next = hourDataArray[i + 1].date;
+
+
+    } elseif (i == (hourDataArray.length - 1)) {
+    // I am at the end of the array and there is no next item
+    var current =  hourDataArray[i].date;
+    var previous =  hourDataArray[i - 1].date;
+//    var next = hourDataArray[i + 1].date;
+
+    } else {
+    // When in the middle items
+    var current =  hourDataArray[i].date;
+    var previous =  hourDataArray[i - 1].date;
+    var next = hourDataArray[i + 1].date;
+
+
+   }
+
+    if (myCurrData > currDatetimeConverted) {
+      var current =  hourDataArray[i].date;
+      var previous =  hourDataArray[i - 1].date;
+      var next = hourDataArray[i + 1].date;
+
+    }
+
+
+
+
+  // //console.log(myCurrData);
+  // var len = hourDataArray.length;
+  // //  var l = array.length;
+  //
+  // var current = hourDataArray[i].date;
+  // var previous = hourDataArray[i == 0 ? len - 1 : i - 1].date;
+  // var next = hourDataArray[i == len - 1 ? 0 : i + 1].date;
+
+
+  // var dt1InMillSec = dt1.getTime();
+  // var dt2InMillSec = dt2.getTime();
+  //
+  // var compueteResults = (dt1InMillSec - dt2InMillSec) / 1000;
+  // console.log(compueteResults);
+
+
+  // var current = array[i];
+  // var previous = array[(i + l - 1) % l];
+  // var next = array[(i + 1) % l];
+  //
+  // var current = hourDataArray[i].date;
+  // var previous = hourDataArray[(i + len - 1) % len].date;
+  // var next = hourDataArray[(i + 1) % len].date;
+
+  console.log(current);
+  //  console.log(previous);
+  //console.log(next);
+}
+return;
 
 }
 getDelayForHour(15, 01, 2018, 15, "");
