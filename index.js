@@ -4,7 +4,7 @@ var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
 //console.log(hourDataArray);
-
+var secondColumn = [];
 //set up express app
 const app = express();
 
@@ -84,47 +84,54 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   for (var i = 0; i < len; i++) {
     var myCurrData = hourDataArray[i].date;
     var inSeconds = (60 * 60);
+    var current = hourDataArray[i].date;
+    //  console.log(current);
 
     if (len == 1) {
       // There is only one item in the array
-      var current = hourDataArray[i].date;
-      //    console.log(current);
 
 
     } else if (i == 0) {
       // I am at the start of the array and there is no previous item
+
       var current = currDatetimeConverted;
       var next = hourDataArray[i + 1].date;
-      console.log(next);
+      //    console.log(next);
       var currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
       var nextDelay = hourDataArray[i + 1].delay;
 
-      var currInMillSec = current.getTime();
-      var nextInMillSec = next.getTime();
-      var compDiffDates = (nextInMillSec - currInMillSec) / 1000;
+      var compDiffDates = (next.getTime() - current.getTime()) / 1000;
       var compAvarage = currDelay / inSeconds * compDiffDates;
-      //  console.log(compAvarage);
+      secondColumn.push(compAvarage);
+  //    console.log(compAvarage);
 
     } else if (i == (len - 1)) {
       // I am at the end of the array and there is no next item
       var current = hourDataArray[i].date;
       var previous = hourDataArray[i - 1].date;
       var prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
-      console.log(prevDelay);
+      //    console.log(prevDelay);
 
-      var currInMillSec = current.getTime();
-      var prevInMillSec = previous.getTime();
-      var computeDifference = (currInMillSec - prevInMillSec) / 1000;
-      console.log(computeDifference);
+      var computeDifference = (current.getTime() - previous.getTime()) / 1000;
+      secondColumn.push(computeDifference);
+    //  console.log(computeDifference);
 
-      computeAva = prevDelay / inSeconds * computeDifference;
-      console.log(computeAva);
+      //      computeAva = prevDelay / inSeconds * computeDifference;
+      //      console.log(computeAva);
 
     } else {
       // When in the middle items
       var current = hourDataArray[i].date;
-      var previous = hourDataArray[i - 1];
-      var next = hourDataArray[i + 1].date;
+      var previous = hourDataArray[i - 1].date;
+      //    console.log(previous);
+      var res = (current.getTime() - previous.getTime()) / 1000;
+
+    //  console.log(res);
+      secondColumn.push(res);
+
+      console.log(secondColumn);
+
+      //  console.log(res);
 
 
     }
