@@ -1,10 +1,11 @@
 const express = require('express');
 const routes = require('./routes/api');
+const listToArray = require('list-to-array');
 var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
 //console.log(hourDataArray);
-var secondColumn = [];
+var firstColumn = [];
 //set up express app
 const app = express();
 
@@ -24,26 +25,59 @@ function pad(n, width, z) {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-function getDelayForHour(day, month, year, hour, massiveJson) {
+function addHour(day, month, year, hour, addHour, massiveJson) {
+  var addHour = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(addHour, 2) + ":00:00";
+
+  hourDataArray.push({
+    date: new Date(year, month - 1, day, hour),
+    delay: 0
+
+  })
+  // console.log(hourDataArray);
+}
+addHour(15, 01, 2018, 16, "");
+
+
+function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
   // return a single number of seconds
-  var myHour = pad(hour, 2) + ":00:00";
+  // var endHour = pad(endHour, 2) + ":00:00";
 
-  var myDay = pad(day, 2);
+  var myHour,
+    myDay,
+    myDate,
+    currDatetime,
+    addHour,
+    next;
 
-  var myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
+  myHour = pad(hour, 2) + ":00:00";
 
-  var currDatetime = myDate + " " + myHour;
+  myDay = pad(day, 2);
+
+  myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
+
+  currDatetime = myDate + " " + myHour;
+
   //  console.log(new Date(currDatetime));
 
   for (var i = 0; i < myBucksData.length; i++) {
-    var convertMyBuckData = new Date(myBucksData[i].date);
 
-    var getDay = (day == convertMyBuckData.getDate());
-    var getYear = (year == convertMyBuckData.getFullYear());
-    var getMonth = (month == (convertMyBuckData.getMonth() + 1));
+    var convertMyBuckData,
+      getDay,
+      getYear,
+      getMonth,
+      getHour,
+      isDatetimeMatch,
+      next;
 
-    var getHour = (hour == convertMyBuckData.getHours());
-    var isDatetimeMatch = (getDay && getYear && getMonth && getHour);
+    convertMyBuckData = new Date(myBucksData[i].date);
+
+
+    getDay = (day == convertMyBuckData.getDate());
+    getYear = (year == convertMyBuckData.getFullYear());
+    getMonth = (month == (convertMyBuckData.getMonth() + 1));
+
+    getHour = (hour == convertMyBuckData.getHours());
+    isDatetimeMatch = (getDay && getYear && getMonth && getHour);
     if (isDatetimeMatch) {
 
       hourDataArray.push({
@@ -63,10 +97,14 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       hourDataArray.push({
         date: new Date(year, month - 1, day, hour),
         delay: prevDelay
+
       })
+      //  console.log(hourDataArray);
+
       break;
     }
   }
+
   hourDataArray.sort(function(a, b) {
     if (a.date < b.date) {
       return -1
@@ -82,9 +120,16 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
   var len = hourDataArray.length;
   for (var i = 0; i < len; i++) {
-    var myCurrData = hourDataArray[i].date;
-    var inSeconds = (60 * 60);
-    var current = hourDataArray[i].date;
+
+    var myCurrData,
+      inSeconds,
+      current,
+      next;
+
+    myCurrData = hourDataArray[i].date;
+    //   console.log(myCurrData);
+    inSeconds = (60 * 60);
+    current = hourDataArray[i].date;
     //  console.log(current);
 
     if (len == 1) {
@@ -93,53 +138,51 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
     } else if (i == 0) {
       // I am at the start of the array and there is no previous item
+      var current,
+        next,
+        current,
+        nextDelay,
+        compDiffDates,
+        compAvarage,
+        next;
 
-      var current = currDatetimeConverted;
-      var next = hourDataArray[i + 1].date;
+      current = currDatetimeConverted;
+      next = hourDataArray[i + 1].date;
       //    console.log(next);
-      var currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
-      var nextDelay = hourDataArray[i + 1].delay;
+      currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
+      nextDelay = hourDataArray[i + 1].delay;
 
-      var compDiffDates = (next.getTime() - current.getTime()) / 1000;
-      var compAvarage = currDelay / inSeconds * compDiffDates;
-      secondColumn.push(compAvarage);
-  //    console.log(compAvarage);
+      compDiffDates = (next.getTime() - current.getTime()) / 1000;
+      compAvarage = currDelay / inSeconds * compDiffDates;
+    //  console.log(compDiffDates);
 
     } else if (i == (len - 1)) {
       // I am at the end of the array and there is no next item
-      var current = hourDataArray[i].date;
-      var previous = hourDataArray[i - 1].date;
-      var prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
-      //    console.log(prevDelay);
+      var current,
+        previous,
+        prevDelay,
+        computeDifference,
+        next;
 
-      var computeDifference = (current.getTime() - previous.getTime()) / 1000;
-      secondColumn.push(computeDifference);
-    //  console.log(computeDifference);
+      current = hourDataArray[i].date;
+      previous = hourDataArray[i - 1].date;
+      prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
 
-      //      computeAva = prevDelay / inSeconds * computeDifference;
-      //      console.log(computeAva);
-
+      computeDifference = (current.getTime() - previous.getTime()) / 1000;
+      console.log(computeDifference);
     } else {
       // When in the middle items
-      var current = hourDataArray[i].date;
-      var previous = hourDataArray[i - 1].date;
-      //    console.log(previous);
-      var res = (current.getTime() - previous.getTime()) / 1000;
+      var current,
+        previous,
+        res,
+        next;
 
-    //  console.log(res);
-      secondColumn.push(res);
-
-      console.log(secondColumn);
-
-      //  console.log(res);
-
+      current = hourDataArray[i].date;
+      previous = hourDataArray[i - 1].date;
+      res = (current.getTime() - previous.getTime()) / 1000;
 
     }
-
-
-    // var current = hourDataArray[i].date;
-    // var previous = hourDataArray[i == 0 ? len - 1 : i - 1].date;
-    // var next = hourDataArray[i == len - 1 ? 0 : i + 1].date;
+    console.log(res);
 
   }
   return;
@@ -150,7 +193,6 @@ getDelayForHour(15, 01, 2018, 15, "");
 //2017/12/22 19:00:00
 //2018/01/15 12:00:00
 //2017/12/14 19:00:00
-
 
 
 //initialiaze routes
