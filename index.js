@@ -98,8 +98,9 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
         date: new Date(year, month - 1, day, hour),
         delay: prevDelay
 
+
       })
-      //  console.log(hourDataArray);
+      //   console.log(hourDataArray);
 
       break;
     }
@@ -127,7 +128,6 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       next;
 
     myCurrData = hourDataArray[i].date;
-    //   console.log(myCurrData);
     inSeconds = (60 * 60);
     current = hourDataArray[i].date;
 
@@ -182,10 +182,16 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       res = (current.getTime() - previous.getTime()) / 1000;
 
     }
-    console.log(res);
-    //console.log(current);
 
+/*    hourDataArray.push({
+      date: hourDataArray[i].date,
+      delay: hourDataArray[i].delay,
+      sec: res
+    })*/
+    hourDataArray[i].sec = res;
+//    console.log(hourDataArray[i].sec);
   }
+  console.log(hourDataArray)
   return;
 
 }
@@ -201,7 +207,7 @@ app.use('/api', require("./routes/api").router);
 
 
 //start the serverce
-var server = app.listen(35000, function() {
+var server = app.listen(34000, function() {
 
   var host = server.address().address;
   var port = server.address().port;
