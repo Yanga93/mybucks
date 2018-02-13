@@ -130,7 +130,7 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
     //   console.log(myCurrData);
     inSeconds = (60 * 60);
     current = hourDataArray[i].date;
-    //  console.log(current);
+
 
     if (len == 1) {
       // There is only one item in the array
@@ -154,7 +154,7 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
 
       compDiffDates = (next.getTime() - current.getTime()) / 1000;
       compAvarage = currDelay / inSeconds * compDiffDates;
-    //  console.log(compDiffDates);
+      //      console.log(compDiffDates);
 
     } else if (i == (len - 1)) {
       // I am at the end of the array and there is no next item
@@ -168,8 +168,8 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       previous = hourDataArray[i - 1].date;
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
 
-      computeDifference = (current.getTime() - previous.getTime()) / 1000;
-      console.log(computeDifference);
+      res = (current.getTime() - previous.getTime()) / 1000;
+      // console.log(computeDifference);
     } else {
       // When in the middle items
       var current,
@@ -183,6 +183,7 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
 
     }
     console.log(res);
+    //console.log(current);
 
   }
   return;
