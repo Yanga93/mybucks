@@ -1,11 +1,13 @@
 const express = require('express');
 const routes = require('./routes/api');
 const listToArray = require('list-to-array');
+// load math.js
+const math = require('mathjs');
 var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
-//console.log(hourDataArray);
-var firstColumn = [];
+
+
 //set up express app
 const app = express();
 
@@ -39,8 +41,6 @@ addHour(15, 01, 2018, 16, "");
 
 
 function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
-  // return a single number of seconds
-  // var endHour = pad(endHour, 2) + ":00:00";
 
   var myHour,
     myDay,
@@ -127,7 +127,7 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       current,
       next;
 
-    myCurrData = hourDataArray[i].date;
+    // myCurrData = hourDataArray[i].date;
     inSeconds = (60 * 60);
     current = hourDataArray[i].date;
 
@@ -148,13 +148,13 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
 
       current = currDatetimeConverted;
       next = hourDataArray[i + 1].date;
-      //    console.log(next);
       currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
+      //    console.log(currDelay);
       nextDelay = hourDataArray[i + 1].delay;
+      //      console.log(nextDelay);
 
       compDiffDates = (next.getTime() - current.getTime()) / 1000;
-      compAvarage = currDelay / inSeconds * compDiffDates;
-      //      console.log(compDiffDates);
+
 
     } else if (i == (len - 1)) {
       // I am at the end of the array and there is no next item
@@ -167,6 +167,8 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       current = hourDataArray[i].date;
       previous = hourDataArray[i - 1].date;
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
+      //      console.log(prevDelay);
+
 
       res = (current.getTime() - previous.getTime()) / 1000;
       // console.log(computeDifference);
@@ -179,19 +181,94 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
 
       current = hourDataArray[i].date;
       previous = hourDataArray[i - 1].date;
+      prevMiddleDelay = hourDataArray[i - 1].delay;
+      //    console.log(prevMiddleDelay);
       res = (current.getTime() - previous.getTime()) / 1000;
 
     }
 
-/*    hourDataArray.push({
-      date: hourDataArray[i].date,
-      delay: hourDataArray[i].delay,
-      sec: res
-    })*/
+
     hourDataArray[i].sec = res;
-//    console.log(hourDataArray[i].sec);
+    // console.log(res);
   }
-  console.log(hourDataArray)
+  //  console.log(hourDataArray)
+
+  for (var i = 0; i < len; i++) {
+
+    var getSec = hourDataArray[i].sec;
+    // console.log(getSec);
+
+    if (len == 1) {
+      // There is only one item in the array
+    } else if (i == 0) {
+      // I am at the start of the array and there is no previous item
+      var current,
+        next,
+        current,
+        nextDelay,
+        compDiffDates,
+        compAvarage,
+        next;
+
+      current = getSec; //return 0 inSeconds delay
+
+      next = hourDataArray[i + 1].sec; // return 1803 inSeconds delay
+
+
+      currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; // return 0 inSeconds delay
+
+      nextDelay = hourDataArray[i + 1].delay; //return 18 inSeconds delay
+
+
+      var compInSecRes = (current / inSeconds * next); //return NaN
+
+
+
+    } else if (i == (len - 1)) {
+      // I am at the end of the array and there is no next item
+      var current,
+        previous,
+        prevDelay,
+        next;
+
+      current = hourDataArray[i].sec; //return => 57
+      //console.log(current);
+      previous = hourDataArray[i - 1].sec; //return => 61
+      //  console.log(previous);
+      prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; //return => 0
+      //    console.log(prevDelay);
+      preDelay = hourDataArray[i == 0 ? len - 1 : i - 2].delay; //return => 13
+      //      console.log(preDelay);
+
+      var computeSecondRow = (preDelay / inSeconds * previous); // return => 0.22027777777777777
+      console.log(computeSecondRow);
+
+
+
+    } else {
+      // I am at the middle and there's previous, current and next
+      var currSec,
+        prevSec,
+
+
+        currSec = hourDataArray[i].sec;
+      //  console.log(currSec);
+      prevSec = hourDataArray[i - 1].sec;
+      //  console.log(prevSec);
+
+      //onsole.log(prevSec);
+      var finalRes = ((prevMiddleDelay / inSeconds) * currSec);
+        console.log(finalRes);
+      //  var totalAverageDelayPerHour = math.sum(finalRes);
+    }
+
+    hourDataArray[i].finalRes = finalRes;
+    //console.log(totalAverageDelayPerHour);
+    var totalAverageDelayPerHourInSec = hourDataArray[i].finalRes;
+
+  }
+  //console.log(math.sum(totalAverageDelayPerHourInSec));
+
   return;
 
 }
