@@ -1,11 +1,11 @@
 const express = require('express');
 const routes = require('./routes/api');
-const listToArray = require('list-to-array');
-// load math.js
-const math = require('mathjs');
+var _ = require('lodash');
 var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
+
+var sumArray = [];
 
 
 //set up express app
@@ -191,7 +191,7 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
     hourDataArray[i].sec = res;
     //   console.log(res);
   }
-    console.log(hourDataArray)
+  //  console.log(hourDataArray)
 
   for (var i = 0; i < len; i++) {
 
@@ -218,8 +218,8 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       nextDelay = hourDataArray[i + 1].delay; //return 18 inSeconds delay
 
 
-      var compInSecRes = (currDelay / inSeconds * next); //return NaN
-    //  console.log(compInSecRes);
+      var finalRes = (currDelay / inSeconds * next); //return NaN
+      //  console.log(compInSecRes);
 
 
     } else if (i == (len - 1)) {
@@ -236,8 +236,8 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       preDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; //return => 13
       //  console.log(prevDelay);
 
-      var computeSecondRow = (prevDelay / inSeconds * previous); // return => 0.22027777777777777
-      //    console.log(computeSecondRow);
+      var finalRes = (prevDelay / inSeconds * previous); // return => 0.22027777777777777
+      //      console.log(computeSecondRow);
 
 
 
@@ -255,14 +255,18 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
 
       //onsole.log(prevSec);
       var finalRes = ((preDelay / inSeconds) * currSec);
-//      console.log(finalRes);
+      //    console.log(finalRes);
       //  var totalAverageDelayPerHour = math.sum(finalRes);
     }
 
     hourDataArray[i].finalRes = finalRes;
-    console.log(hourDataArray);
+    //  console.log(hourDataArray);
+    sumArray.push(finalRes);
   }
-//  console.log(totalAverageDelayPerHourInSec);
+  //  console.log(sumArray);
+  //    console.log(totalAverageDelayPerHourInSec);
+  var totalAverageDelayPerHour = _.sum(sumArray); //10
+  console.log(totalAverageDelayPerHour);
 
   return;
 
