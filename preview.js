@@ -189,9 +189,9 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
 
 
     hourDataArray[i].sec = res;
-    //   console.log(res);
+    // console.log(res);
   }
-    console.log(hourDataArray)
+  //  console.log(hourDataArray)
 
   for (var i = 0; i < len; i++) {
 
@@ -206,20 +206,22 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
         next,
         current,
         nextDelay,
+        compDiffDates,
+        compAvarage,
         next;
 
       current = getSec; //return 0 inSeconds delay
 
       next = hourDataArray[i + 1].sec; // return 1803 inSeconds delay
-      //  console.log(next);
+
 
       currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; // return 0 inSeconds delay
 
       nextDelay = hourDataArray[i + 1].delay; //return 18 inSeconds delay
 
 
-      var compInSecRes = (currDelay / inSeconds * next); //return NaN
-    //  console.log(compInSecRes);
+      var compInSecRes = (current / inSeconds * next); //return NaN
+
 
 
     } else if (i == (len - 1)) {
@@ -230,14 +232,16 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
         next;
 
       current = hourDataArray[i].sec; //return => 57
+      //console.log(current);
       previous = hourDataArray[i - 1].sec; //return => 61
+      //  console.log(previous);
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; //return => 0
+      //    console.log(prevDelay);
+      preDelay = hourDataArray[i == 0 ? len - 1 : i - 2].delay; //return => 13
+      //      console.log(preDelay);
 
-      preDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; //return => 13
-      //  console.log(prevDelay);
-
-      var computeSecondRow = (prevDelay / inSeconds * previous); // return => 0.22027777777777777
-      //    console.log(computeSecondRow);
+      var computeSecondRow = (preDelay / inSeconds * previous); // return => 0.22027777777777777
+      console.log(computeSecondRow);
 
 
 
@@ -251,18 +255,19 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
       //  console.log(currSec);
       prevSec = hourDataArray[i - 1].sec;
       //  console.log(prevSec);
-      preDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay; //return => 13
 
       //onsole.log(prevSec);
-      var finalRes = ((preDelay / inSeconds) * currSec);
-//      console.log(finalRes);
+      var finalRes = ((prevMiddleDelay / inSeconds) * currSec);
+        console.log(finalRes);
       //  var totalAverageDelayPerHour = math.sum(finalRes);
     }
 
     hourDataArray[i].finalRes = finalRes;
-    console.log(hourDataArray);
+    //console.log(totalAverageDelayPerHour);
+    var totalAverageDelayPerHourInSec = hourDataArray[i].finalRes;
+
   }
-//  console.log(totalAverageDelayPerHourInSec);
+  //console.log(math.sum(totalAverageDelayPerHourInSec));
 
   return;
 
@@ -279,7 +284,7 @@ app.use('/api', require("./routes/api").router);
 
 
 //start the serverce
-var server = app.listen(34000, function() {
+var server = app.listen(36000, function() {
 
   var host = server.address().address;
   var port = server.address().port;
