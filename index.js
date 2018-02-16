@@ -233,18 +233,22 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     sumArray.push(finalRes);
   }
   var totalAverageDelayPerHour = _.sum(sumArray);
-  console.log(totalAverageDelayPerHour);
+   console.log(totalAverageDelayPerHour);
 
   return;
 
 }
-getDelayForHour(18, 12, 2017, 17, "");
+getDelayForHour(15, 01, 2018, 15, "");
 //2017/12/18 17:00:00 return => 0.3
 //2017/12/19 12:00:00 return => 0.8833
 //2018/01/15 15:00:00
 //2017/12/22 19:00:00
 //2018/01/15 12:00:00
 //2017/12/14 19:00:00
+
+
+var myVar;
+
 
 
 function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour, getDelayForHour) {
@@ -261,39 +265,52 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
     next,
 
     isYear = pad(isYear, 4);
-    isMonth = pad(isMonth, 2);
-    isDay = pad(isDay, 2);
-    isHour = pad(isHour, 2);
+  isMonth = pad(isMonth, 2);
+  isDay = pad(isDay, 2);
+  isHour = pad(isHour, 2);
 
-    thisYear = pad(thisYear, 4);
-    thisMonth = pad(thisMonth, 2);
-    thisDay = pad(thisDay, 2);
-    thisHour = pad(thisHour, 2);
+  thisYear = pad(thisYear, 4);
+  thisMonth = pad(thisMonth, 2);
+  thisDay = pad(thisDay, 2);
+  thisHour = pad(thisHour, 2);
 
   var startDate = isYear + "/" + isMonth + "/" + isDay + " " + isHour + ":00:00";
   var endDate = thisYear + "/" + thisMonth + "/" + thisDay + " " + thisHour + ":00:00";
 
+  /**
+  Get ====>>>
+  * startD.year
+  * startD.month1
+  *startD.day1
+  *startD.hour
+
+  Then pass them as parameters to getDelayForHour();
+
+  **/
   var startD = new Date(startDate);
   var endD = new Date(endDate);
   while (startD < endD) {
 
+
     startD.setHours(startD.getHours() + 1);
     var t = new Date(startD);
     var toStringDate = t.toString();
-  //  console.log(toStringDate);
+//    console.log(toStringDate);
 
-  }
-
-  if (typeof getDelayForHour === "function") {
+/**
+if (typeof getDelayForHour === "function") {
 
 
     getDelayForHour(isYear, isMonth, isDay, isHour);
   }
+**/
 
+
+  //  getDelayForHour();
+  }
 
 }
 getReportForMyBucksData(2017, 12, 01, 23, 2017, 12, 31, 00);
-//(2017, 12, 01, 23, 2017, 12, 31, 00)
 // startdate 2017/12/01 00:00:00
 // endDate  2017/12/31 00:00:00
 
