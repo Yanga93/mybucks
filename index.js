@@ -1,5 +1,6 @@
 const express = require('express');
 const routes = require('./routes/api');
+var moment = require('moment');
 var _ = require('lodash');
 var myBucksData = require('./MyBucksStats.json')
 
@@ -27,9 +28,9 @@ function pad(n, width, z) {
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-function addHour(day, month, year, hour, addHour, massiveJson) {
+function addHour(day, month, year, hour, massiveJson) {
   var addHour = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(addHour, 2) + ":00:00";
-
+  //console.log(addHour);
   hourDataArray.push({
     date: new Date(year, month - 1, day, hour),
     delay: 0
@@ -38,7 +39,7 @@ function addHour(day, month, year, hour, addHour, massiveJson) {
 addHour(15, 01, 2018, 16, "");
 
 
-function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
+function getDelayForHour(day, month, year, hour, massiveJson) {
 
   var myHour,
     myDay,
@@ -51,6 +52,8 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
   myDay = pad(day, 2);
   myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
   currDatetime = myDate + " " + myHour;
+
+  //console.log(currDatetime);
 
   for (var i = 0; i < myBucksData.length; i++) {
 
@@ -235,12 +238,54 @@ function getDelayForHour(day, month, year, hour, addHour, massiveJson) {
   return;
 
 }
-getDelayForHour(15, 01, 2018, 15, "");
+getDelayForHour(18, 12, 2017, 17, "");
+//2017/12/18 17:00:00 return => 0.3
+//2017/12/19 12:00:00 return => 0.8833
 //2018/01/15 15:00:00
 //2017/12/22 19:00:00
 //2018/01/15 12:00:00
 //2017/12/14 19:00:00
 
+
+var myVar;
+
+
+
+function getReportForMyBucksData(year, month, day, hour, year1, month1, day1, hour1) {
+  // myVar = setInterval(getDelayForHour, 1000);
+
+
+  var startDate = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(hour, 2) + ":00:00";
+  var endDate = pad(year1, 4) + "/" + pad(month1, 2) + "/" + pad(day1, 2) + " " + pad(hour1, 2) + ":00:00";
+
+  //    console.log(startDate);
+  //  console.log(endDate);
+
+  var len = 48;
+  //  console.log(len);
+  var startD = new Date(startDate);
+  var endD = new Date(endDate);
+  while (startD < endD) {
+//    var getMyBucksDatetime = myBucksData[i].date;
+    // var convertMyBucksData = new Date(getMyBucksDatetime);
+    //  console.log(convertMyBucksData);
+
+//    if ((getMyBucksDatetime > startDate) && (getMyBucksDatetime < endDate)) {
+
+      startD.setHours(startD.getHours() + 1);
+      var t = new Date(startD);
+      var toString = t.toString();
+      console.log(toString);
+
+//    }
+
+  }
+
+
+}
+getReportForMyBucksData(2017, 12, 01, 03, 2017, 12, 31, 00);
+// startdate 2017/12/01 00:00:00
+// endDate  2017/12/31 00:00:00
 
 //initialiaze routes
 app.use('/api', require("./routes/api").router);
