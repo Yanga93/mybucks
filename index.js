@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = require('./routes/api');
-var moment = require('moment');
+// var moment = require('moment');
 var _ = require('lodash');
 var myBucksData = require('./MyBucksStats.json')
 
@@ -247,43 +247,53 @@ getDelayForHour(18, 12, 2017, 17, "");
 //2017/12/14 19:00:00
 
 
-var myVar;
+function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour, getDelayForHour) {
 
+  var
+    isYear,
+    isMonth,
+    isDay,
+    isHour,
+    thisYear,
+    thisMonth,
+    thisDay,
+    thisHour,
+    next,
 
+    isYear = pad(isYear, 4);
+    isMonth = pad(isMonth, 2);
+    isDay = pad(isDay, 2);
+    isHour = pad(isHour, 2);
 
-function getReportForMyBucksData(year, month, day, hour, year1, month1, day1, hour1) {
-  // myVar = setInterval(getDelayForHour, 1000);
+    thisYear = pad(thisYear, 4);
+    thisMonth = pad(thisMonth, 2);
+    thisDay = pad(thisDay, 2);
+    thisHour = pad(thisHour, 2);
 
+  var startDate = isYear + "/" + isMonth + "/" + isDay + " " + isHour + ":00:00";
+  var endDate = thisYear + "/" + thisMonth + "/" + thisDay + " " + thisHour + ":00:00";
 
-  var startDate = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(hour, 2) + ":00:00";
-  var endDate = pad(year1, 4) + "/" + pad(month1, 2) + "/" + pad(day1, 2) + " " + pad(hour1, 2) + ":00:00";
-
-  //    console.log(startDate);
-  //  console.log(endDate);
-
-  var len = 48;
-  //  console.log(len);
   var startD = new Date(startDate);
   var endD = new Date(endDate);
   while (startD < endD) {
-//    var getMyBucksDatetime = myBucksData[i].date;
-    // var convertMyBucksData = new Date(getMyBucksDatetime);
-    //  console.log(convertMyBucksData);
 
-//    if ((getMyBucksDatetime > startDate) && (getMyBucksDatetime < endDate)) {
+    startD.setHours(startD.getHours() + 1);
+    var t = new Date(startD);
+    var toStringDate = t.toString();
+  //  console.log(toStringDate);
 
-      startD.setHours(startD.getHours() + 1);
-      var t = new Date(startD);
-      var toString = t.toString();
-      console.log(toString);
+  }
 
-//    }
+  if (typeof getDelayForHour === "function") {
 
+
+    getDelayForHour(isYear, isMonth, isDay, isHour);
   }
 
 
 }
-getReportForMyBucksData(2017, 12, 01, 03, 2017, 12, 31, 00);
+getReportForMyBucksData(2017, 12, 01, 23, 2017, 12, 31, 00);
+//(2017, 12, 01, 23, 2017, 12, 31, 00)
 // startdate 2017/12/01 00:00:00
 // endDate  2017/12/31 00:00:00
 
