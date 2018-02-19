@@ -233,12 +233,13 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     sumArray.push(finalRes);
   }
   var totalAverageDelayPerHour = _.sum(sumArray);
-   console.log(totalAverageDelayPerHour);
+  //console.log(totalAverageDelayPerHour);
 
   return;
 
 }
-getDelayForHour(15, 01, 2018, 15, "");
+getDelayForHour(05, 12, 2017, 09, "");
+//2017/12/05 09:00:00
 //2017/12/18 17:00:00 return => 0.3
 //2017/12/19 12:00:00 return => 0.8833
 //2018/01/15 15:00:00
@@ -277,36 +278,17 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
   var startDate = isYear + "/" + isMonth + "/" + isDay + " " + isHour + ":00:00";
   var endDate = thisYear + "/" + thisMonth + "/" + thisDay + " " + thisHour + ":00:00";
 
-  /**
-  Get ====>>>
-  * startD.year
-  * startD.month1
-  *startD.day1
-  *startD.hour
-
-  Then pass them as parameters to getDelayForHour();
-
-  **/
   var startD = new Date(startDate);
+  var _year = startD.getFullYear();
+  var _month = startD.getMonth();
+  var _day = startD.getDay();
+  var _hours = startD.getHours();
+
   var endD = new Date(endDate);
   while (startD < endD) {
-
-
     startD.setHours(startD.getHours() + 1);
     var t = new Date(startD);
     var toStringDate = t.toString();
-//    console.log(toStringDate);
-
-/**
-if (typeof getDelayForHour === "function") {
-
-
-    getDelayForHour(isYear, isMonth, isDay, isHour);
-  }
-**/
-
-
-  //  getDelayForHour();
   }
 
 }
