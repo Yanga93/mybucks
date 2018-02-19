@@ -3,10 +3,9 @@ const routes = require('./routes/api');
 // var moment = require('moment');
 var _ = require('lodash');
 var myBucksData = require('./MyBucksStats.json')
+console.log(myBucksData);
 
-var hourDataArray = [];
 
-var sumArray = [];
 
 
 //set up express app
@@ -29,6 +28,7 @@ function pad(n, width, z) {
 }
 
 function addHour(day, month, year, hour, massiveJson) {
+  var hourDataArray = [];
   var addHour = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(addHour, 2) + ":00:00";
   //console.log(addHour);
   hourDataArray.push({
@@ -40,6 +40,8 @@ addHour(15, 01, 2018, 16, "");
 
 
 function getDelayForHour(day, month, year, hour, massiveJson) {
+  var hourDataArray = [];
+  var sumArray = [];
 
   var myHour,
     myDay,
@@ -233,12 +235,16 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     sumArray.push(finalRes);
   }
   var totalAverageDelayPerHour = _.sum(sumArray);
-  //console.log(totalAverageDelayPerHour);
+  console.log(totalAverageDelayPerHour);
 
   return;
 
 }
 getDelayForHour(05, 12, 2017, 09, "");
+//getDelayForHour(05, 12, 2017, 09, "");
+// getDelayForHour(05, 12, 2017, 09, "");
+// getDelayForHour(18, 12, 2017, 17, "");
+// getDelayForHour(19, 12, 2017, 12, "");
 //2017/12/05 09:00:00
 //2017/12/18 17:00:00 return => 0.3
 //2017/12/19 12:00:00 return => 0.8833
@@ -248,11 +254,8 @@ getDelayForHour(05, 12, 2017, 09, "");
 //2017/12/14 19:00:00
 
 
-var myVar;
 
-
-
-function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour, getDelayForHour) {
+function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour) {
 
   var
     isYear,
@@ -289,10 +292,14 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
     startD.setHours(startD.getHours() + 1);
     var t = new Date(startD);
     var toStringDate = t.toString();
+    console.log(toStringDate);
+
+    getDelayForHour(_day, _month, _year, _hours, "");
+
   }
 
 }
-getReportForMyBucksData(2017, 12, 01, 23, 2017, 12, 31, 00);
+//getReportForMyBucksData(2017, 12, 01, 23, 2017, 12, 31, 00);
 // startdate 2017/12/01 00:00:00
 // endDate  2017/12/31 00:00:00
 
