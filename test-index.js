@@ -260,8 +260,8 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
 }
 //getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
-var array1  = new getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
-var array2  = new getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
+getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
+getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
 //getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.392
 
 
@@ -318,7 +318,7 @@ app.use('/api', require("./routes/api").router);
 
 
 //start the serverce
-var server = app.listen(34000, function() {
+var server = app.listen(35050, function() {
 
   var host = server.address().address;
   var port = server.address().port;
