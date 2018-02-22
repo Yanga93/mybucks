@@ -239,6 +239,11 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     hourDataArray[i].finalRes = finalRes;
     sumArray.push(finalRes);
   }
+/**
+This loop is to compare the first function call array with second
+and remove the duplicates in the second function call compute the correct sum 
+**/
+
   for (var i = 0; i<sumArray.length; i++) {
     var arrlen = sumArray.length;
     for (var j = 0; j<arrlen; j++) {
