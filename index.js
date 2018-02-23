@@ -2,7 +2,6 @@ const express = require('express');
 const routes = require('./routes/api');
 var _ = require('lodash');
 var myBucksData = require('./MyBucksStats.json')
-//console.log(myBucksData);
 
 var hourDataArray = [];
 
@@ -29,33 +28,29 @@ function pad(n, width, z) {
 function addHour(day, month, year, hour, massiveJson) {
 
   var addHour = pad(year, 4) + "/" + pad(month, 2) + "/" + pad(day, 2) + " " + pad(addHour, 2) + ":00:00";
-  //console.log(addHour);
+
   hourDataArray.push({
     date: new Date(year, month - 1, day, hour),
     delay: 0
   })
 }
-addHour(15, 01, 2018, 16, "");
-
-
 
 function getDelayForHour(day, month, year, hour, massiveJson) {
-  // var hourDataArray = [];
+
+  hourDataArray = [];
   var sumArray = [];
+  addHour(15, 01, 2018, 16, "");
 
   var myHour,
     myDay,
     myDate,
     currDatetime,
-    addHour,
     next;
 
   myHour = pad(hour, 2) + ":00:00";
   myDay = pad(day, 2);
   myDate = pad(year, 4) + "/" + pad(month, 2) + "/" + myDay;
   currDatetime = myDate + " " + myHour;
-
-  //console.log(currDatetime);
 
   for (var i = 0; i < myBucksData.length; i++) {
 
@@ -133,11 +128,9 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     } else if (i == 0) {
       // I am at the start of the array and there is no previous item
       var current,
-        next,
         current,
         nextDelay,
-        compDiffDates,
-        compAvarage,
+        res,
         next;
 
       current = currDatetimeConverted;
@@ -145,7 +138,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
       nextDelay = hourDataArray[i + 1].delay;
 
-      compDiffDates = (next.getTime() - current.getTime()) / 1000;
+      res = (next.getTime() - current.getTime()) / 1000;
 
 
     } else if (i == (len - 1)) {
@@ -153,7 +146,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       var current,
         previous,
         prevDelay,
-        computeDifference,
+        res,
         next;
 
       current = hourDataArray[i].date;
@@ -214,7 +207,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
       preDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
       finalRes = (prevDelay / inSeconds * previous);
-      //  console.log(finalRes);
+
     } else {
       // I am at the middle and there's previous, current and next
       var
@@ -225,49 +218,29 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
         next,
 
         currSec = hourDataArray[i].sec;
-      //    console.log(currSec);
       prevSec = hourDataArray[i - 1].sec;
-      //console.log(prevSec);
       preDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
 
 
       finalRes = ((preDelay / inSeconds) * currSec);
-      //  console.log(finalRes);
-      //  console.log( hourDataArray);
     }
 
     hourDataArray[i].finalRes = finalRes;
     sumArray.push(finalRes);
   }
-/**
-This loop is to compare the first function call array with second
-and remove the duplicates in the second function call compute the correct sum 
-**/
-
-  for (var i = 0; i<sumArray.length; i++) {
-    var arrlen = sumArray.length;
-    for (var j = 0; j<arrlen; j++) {
-      if (sumArray[i] == sumArray[j]) {
-        sumArray = sumArray.slice(0, j).concat(sumArray.slice(j+1, arrlen));
-      }
-    }
-  }
- console.log(sumArray);
-
-
 
   var totalAverageDelayPerHour = _.sum(sumArray);
 
- console.log(totalAverageDelayPerHour);
+  console.log(totalAverageDelayPerHour);
 
   return;
 
 
 }
-//getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
-var array1  = new getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
-var array2  = new getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
-//getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.392
+getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
+getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
+getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
+getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.392
 
 
 function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour) {
@@ -323,7 +296,7 @@ app.use('/api', require("./routes/api").router);
 
 
 //start the serverce
-var server = app.listen(34000, function() {
+var server = app.listen(35050, function() {
 
   var host = server.address().address;
   var port = server.address().port;
