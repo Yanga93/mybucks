@@ -280,7 +280,6 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
     var _day = startD.getDate();
     var _hours = startD.getHours();
 
-    startD.setHours(startD.getHours() + 1);
 
     var t = new Date(startD);
     var toStringDate = t.toString();
@@ -288,6 +287,7 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
 
     getDelayForHour(_day, _month, _year, _hours, "");
 
+    startD.setHours(startD.getHours() + 1);
   }
   // console.log(_year);
   // console.log(_month);
