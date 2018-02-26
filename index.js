@@ -237,10 +237,10 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
 
 }
-getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
-getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
-getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
-getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.392
+// getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
+// getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
+// getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
+// getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.392
 
 
 function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour) {
@@ -269,27 +269,38 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
   var startDate = isYear + "/" + isMonth + "/" + isDay + " " + isHour + ":00:00";
   var endDate = thisYear + "/" + thisMonth + "/" + thisDay + " " + thisHour + ":00:00";
 
-  var startD = new Date(startDate);
-  var _year = startD.getFullYear();
-  var _month = startD.getMonth();
-  var _day = startD.getDay();
-  var _hours = startD.getHours();
 
+  var startD = new Date(startDate);
   var endD = new Date(endDate);
+
   while (startD < endD) {
+    //console.log(startD);
+    var _year = startD.getFullYear();
+    var _month = startD.getMonth() + 1;
+    var _day = startD.getDate();
+    var _hours = startD.getHours();
+
     startD.setHours(startD.getHours() + 1);
+
     var t = new Date(startD);
     var toStringDate = t.toString();
-    //   console.log(toStringDate);
+    console.log(toStringDate);
 
-    //  getDelayForHour(_day, _month, _year, _hours, "");
+    getDelayForHour(_day, _month, _year, _hours, "");
 
   }
+  // console.log(_year);
+  // console.log(_month);
+  // console.log(_day);
+  // console.log(_hours);
+
 
 }
-// getReportForMyBucksData(2017, 12, 01, 23, 2017, 12, 31, 00);
-// startdate 2017/12/01 00:00:00
-// endDate  2017/12/31 00:00:00
+getReportForMyBucksData(2017, 12, 01, 12, 2017, 12, 01, 15, "");
+//startdate 2017 / 12 / 01 00: 00: 00
+//2017/12/18 13:00:00
+//endDate 2017 / 12 / 31 00: 00: 00
+
 
 //initialiaze routes
 app.use('/api', require("./routes/api").router);
