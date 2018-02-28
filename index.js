@@ -154,6 +154,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
 
       res = (current.getTime() - previous.getTime()) / 1000;
+      //  console.log(res);
 
     } else {
       // When in the middle items
@@ -231,7 +232,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
   var totalAverageDelayPerHour = _.sum(sumArray);
 
-  console.log(totalAverageDelayPerHour);
+  //   console.log(totalAverageDelayPerHour);
 
   return;
 
@@ -274,7 +275,6 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
   var endD = new Date(endDate);
 
   while (startD < endD) {
-    //console.log(startD);
     var _year = startD.getFullYear();
     var _month = startD.getMonth() + 1;
     var _day = startD.getDate();
@@ -282,17 +282,15 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
 
 
     var t = new Date(startD);
-    var toStringDate = t.toString();
-    console.log(toStringDate);
+    var toStringDate = t.toISOString();
+    var findAndReplace = toStringDate.replace("T", " ");
+
+    var interDateFormat = findAndReplace.split(':').slice(0, -1).join(':');
 
     getDelayForHour(_day, _month, _year, _hours, "");
 
     startD.setHours(startD.getHours() + 1);
   }
-  // console.log(_year);
-  // console.log(_month);
-  // console.log(_day);
-  // console.log(_hours);
 
 
 }
