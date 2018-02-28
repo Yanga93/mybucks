@@ -5,6 +5,9 @@ var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
 
+var resultDatetimeArray = [];
+
+
 
 //set up express app
 const app = express();
@@ -230,9 +233,9 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     sumArray.push(finalRes);
   }
 
-  var totalAverageDelayPerHour = _.sum(sumArray).toFixed(2);
+  totalAverageDelayPerHour = _.sum(sumArray).toFixed(2);
 
-  return;
+  return totalAverageDelayPerHour;
 
 
 }
@@ -285,14 +288,20 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
 
     var interDateFormat = findAndReplace.split(':').slice(0, -1).join(':');
 
-    getDelayForHour(_day, _month, _year, _hours, "");
-
     startD.setHours(startD.getHours() + 1);
+
+    resultingDelay = getDelayForHour(_day, _month, _year, _hours, "");
+    resultDatetimeArray.push({
+      date: interDateFormat,
+      delay: resultingDelay
+    })
+
   }
 
+  console.log(resultDatetimeArray)
 
 }
-getReportForMyBucksData(2017, 12, 01, 12, 2017, 12, 01, 15, "");
+getReportForMyBucksData(2017, 12, 01, 12, 2017, 12, 01, 17, "");
 //startdate 2017 / 12 / 01 00: 00: 00
 //2017/12/18 13:00:00
 //endDate 2017 / 12 / 31 00: 00: 00
