@@ -230,9 +230,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     sumArray.push(finalRes);
   }
 
-  var totalAverageDelayPerHour = _.sum(sumArray);
-
-  //   console.log(totalAverageDelayPerHour);
+  var totalAverageDelayPerHour = _.sum(sumArray).toFixed(2);
 
   return;
 
