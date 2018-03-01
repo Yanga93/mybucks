@@ -5,10 +5,6 @@ var myBucksData = require('./MyBucksStats.json')
 
 var hourDataArray = [];
 
-var resultDatetimeArray = [];
-
-
-
 //set up express app
 const app = express();
 
@@ -234,7 +230,6 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   }
 
   totalAverageDelayPerHour = _.sum(sumArray).toFixed(2);
-
   return totalAverageDelayPerHour;
 
 
@@ -247,6 +242,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
 function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour) {
 
+  var resultDatetimeArray = [];
   var
     isYear,
     isMonth,
@@ -271,9 +267,9 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
   var startDate = isYear + "/" + isMonth + "/" + isDay + " " + isHour + ":00:00";
   var endDate = thisYear + "/" + thisMonth + "/" + thisDay + " " + thisHour + ":00:00";
 
-
   var startD = new Date(startDate);
   var endD = new Date(endDate);
+
 
   while (startD < endD) {
     var _year = startD.getFullYear();
@@ -281,30 +277,24 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
     var _day = startD.getDate();
     var _hours = startD.getHours();
 
-
-    var t = new Date(startD);
-    var toStringDate = t.toISOString();
-    var findAndReplace = toStringDate.replace("T", " ");
-
-    var interDateFormat = findAndReplace.split(':').slice(0, -1).join(':');
+    var getFullDatetime = _year + "-" + _month + "-" + _day + "-" + _hours + " " + _hours + ":" + "00:00";
 
     startD.setHours(startD.getHours() + 1);
-
     resultingDelay = getDelayForHour(_day, _month, _year, _hours, "");
     resultDatetimeArray.push({
-      date: interDateFormat,
+      date: getFullDatetime,
       delay: resultingDelay
     })
 
   }
-
-  console.log(resultDatetimeArray)
-
+  console.log(resultDatetimeArray);
 }
 getReportForMyBucksData(2017, 12, 01, 12, 2017, 12, 01, 17, "");
-//startdate 2017 / 12 / 01 00: 00: 00
-//2017/12/18 13:00:00
-//endDate 2017 / 12 / 31 00: 00: 00
+//2017/12/01 12:00:00   return => 0.92
+//2017/12/01 13:00:00   return => 3.17
+//2017/12/01 14:00:00   return => 1.54
+//2017/12/01 15:00:00   return => 1.66
+//2017/12/01 16:00:00   return => 0.20
 
 
 //initialiaze routes
