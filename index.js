@@ -1,12 +1,17 @@
+const Papa = require('papaparse');
 const express = require('express');
 const routes = require('./routes/api');
 var _ = require('lodash');
-var myBucksData = require('./MyBucksStats.json')
-
+var myBucksData = require('./MyBucksStats.json');
+const fs = require('fs');
+const csv = require('fast-csv');
+const ws = fs.createWriteStream('myBucksStats.csv');
+// const ws = fs.createWriteStream('myBucksStats.csv');
 var hourDataArray = [];
 
+
 //set up express app
-const app = express();
+const app = express()
 
 myBucksData.sort(function(a, b) {
   if (a.date < b.date) {
@@ -287,7 +292,18 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
     })
 
   }
-  console.log(resultDatetimeArray);
+  //converting the json to csv
+  var csvData = Papa.unparse(resultDatetimeArray);
+  console.log(csvData);
+
+  fs = require('fs');
+  fs.writeFile('myBucksStats.csv', csvData, function(err) {
+    if (err)
+      return console.log(err);
+    console.log('success');
+  });
+
+
 }
 getReportForMyBucksData(2017, 12, 01, 12, 2017, 12, 01, 17, "");
 //2017/12/01 12:00:00   return => 0.92
