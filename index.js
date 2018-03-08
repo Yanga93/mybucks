@@ -43,7 +43,8 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
   hourDataArray = [];
   var sumArray = [];
-  addHour(07, 12, 2017, 15, "");
+
+  addHour(day, month,year, hour+1, "");
 
   var myHour,
     myDay,
@@ -114,6 +115,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   var currDatetimeConverted = new Date(currDatetime);
 
   var len = hourDataArray.length;
+//    console.log(hourDataArray);
   for (var i = 0; i < len; i++) {
 
     var myCurrData,
@@ -123,23 +125,28 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
     inSeconds = (60 * 60);
     current = hourDataArray[i].date;
-    //     console.log(current);
 
-    if (i == 1 && i <= len) {
+
+    /*if (i == 1) {
       // There is only one item in the array
 
       var current = hourDataArray[i].date;
+      //console.log(current);
       var startingDate = hourDataArray[i - 1].date;
+      //console.log(startingDate);
       var nextDate = hourDataArray[i + 1].date;
+      //console.log(nextDate);
       var currDelay = hourDataArray[i].delay;
-
+      //console.log(currDelay);
       var res = (nextDate.getTime() - current.getTime()) / 1000;
+      //console.log(res);
 
       //  console.log(res);
       var finalRes = (currDelay / inSeconds * res)
-      console.log(finalRes);
+      //console.log(finalRes);
 
-    } else if (i == 0) {
+
+    } else */if (i == 0) {
       // I am at the start of the array and there is no previous item
       var current,
         current,
@@ -151,8 +158,8 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       next = hourDataArray[i + 1].date;
       currDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
       nextDelay = hourDataArray[i + 1].delay;
-
-      res = (next.getTime() - current.getTime()) / 1000;
+      res = 0;
+  //    res = (next.getTime() - current.getTime()) / 1000;
 
 
     } else if (i == (len - 1)) {
@@ -168,6 +175,8 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
 
       res = (current.getTime() - previous.getTime()) / 1000;
+    //  res = 0;
+
       //  console.log(res);
 
     } else {
@@ -187,13 +196,14 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
     hourDataArray[i].sec = res;
   }
 
+//console.log(hourDataArray);
+
   for (var i = 0; i < len; i++) {
 
     var getSec = hourDataArray[i].sec;
 
-    if (len == 1 && i <= len) {
+    if (len == 1) {
       // There is only one item in the array
-
     } else if (i == 0) {
       // I am at the start of the array and there is no previous item
       var
@@ -222,7 +232,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
       previous = hourDataArray[i - 1].sec;
       prevDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
       preDelay = hourDataArray[i == 0 ? len - 1 : i - 1].delay;
-      finalRes = (prevDelay / inSeconds * previous);
+      finalRes = (prevDelay / inSeconds * current);
 
     } else {
       // I am at the middle and there's previous, current and next
@@ -246,16 +256,16 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   }
 
   totalAverageDelayPerHour = _.sum(sumArray).toFixed(2);
-  //  console.log(totalAverageDelayPerHour);
+  console.log(totalAverageDelayPerHour);
   return totalAverageDelayPerHour;
 
 
 }
-getDelayForHour(07, 12, 2017, 14, ""); // return => 0.23
-// getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
-// getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
-// getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
-// getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.392
+// getDelayForHour(07, 12, 2017, 14, ""); // return => 0.23
+// getDelayForHour(05, 12, 2017, 09, ""); // return => 0.97
+// getDelayForHour(01, 12, 2017, 12, ""); // return => 0.92
+// getDelayForHour(01, 12, 2017, 13, ""); // return => 3.17
+// getDelayForHour(09, 12, 2017, 12, ""); // return =>  5.40
 
 
 function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisMonth, thisDay, thisHour) {
@@ -317,7 +327,7 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
 
 
 }
-//getReportForMyBucksData(2017, 12, 01, 00, 2018, 01, 01, 00, "");
+getReportForMyBucksData(2017, 12, 01, 00, 2018, 01, 01, 00, "");
 //2017/12/01 12:00:00   return => 0.92
 //2017/12/01 13:00:00   return => 3.17
 //2017/12/01 14:00:00   return => 1.54
@@ -330,7 +340,7 @@ app.use('/api', require("./routes/api").router);
 
 
 //start the serverce
-var server = app.listen(35050, function() {
+var server = app.listen(35040, function() {
 
   var host = server.address().address;
   var port = server.address().port;
