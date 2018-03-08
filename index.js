@@ -43,7 +43,7 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
   hourDataArray = [];
   var sumArray = [];
-  addHour(15, 01, 2018, 16, "");
+  addHour(07, 12, 2017, 15, "");
 
   var myHour,
     myDay,
@@ -123,11 +123,21 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
     inSeconds = (60 * 60);
     current = hourDataArray[i].date;
+    //     console.log(current);
 
-
-    if (len == 1) {
+    if (i == 1 && i <= len) {
       // There is only one item in the array
 
+      var current = hourDataArray[i].date;
+      var startingDate = hourDataArray[i - 1].date;
+      var nextDate = hourDataArray[i + 1].date;
+      var currDelay = hourDataArray[i].delay;
+
+      var res = (nextDate.getTime() - current.getTime()) / 1000;
+
+      //  console.log(res);
+      var finalRes = (currDelay / inSeconds * res)
+      console.log(finalRes);
 
     } else if (i == 0) {
       // I am at the start of the array and there is no previous item
@@ -181,8 +191,9 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
 
     var getSec = hourDataArray[i].sec;
 
-    if (len == 1) {
+    if (len == 1 && i <= len) {
       // There is only one item in the array
+
     } else if (i == 0) {
       // I am at the start of the array and there is no previous item
       var
@@ -235,10 +246,12 @@ function getDelayForHour(day, month, year, hour, massiveJson) {
   }
 
   totalAverageDelayPerHour = _.sum(sumArray).toFixed(2);
+  //  console.log(totalAverageDelayPerHour);
   return totalAverageDelayPerHour;
 
 
 }
+getDelayForHour(07, 12, 2017, 14, ""); // return => 0.23
 // getDelayForHour(05, 12, 2017, 09, ""); // return => 0.96666
 // getDelayForHour(01, 12, 2017, 12, ""); // return => 0.917
 // getDelayForHour(01, 12, 2017, 13, ""); // return => 3.165
@@ -294,17 +307,17 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
   }
   //converting the json to csv
   var csvData = Papa.unparse(resultDatetimeArray);
- console.log(csvData);
+  console.log(csvData);
 
   fs.writeFile('myBucksStats.csv', csvData, function(err) {
     if (err)
       return console.log(err);
-   console.log('success');
+    console.log('success');
   });
 
 
 }
-getReportForMyBucksData(2017, 12, 01, 00, 2018, 01, 01, 00, "");
+//getReportForMyBucksData(2017, 12, 01, 00, 2018, 01, 01, 00, "");
 //2017/12/01 12:00:00   return => 0.92
 //2017/12/01 13:00:00   return => 3.17
 //2017/12/01 14:00:00   return => 1.54
