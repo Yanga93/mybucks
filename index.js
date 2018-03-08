@@ -1,14 +1,14 @@
 const Papa = require('papaparse');
 const express = require('express');
 const routes = require('./routes/api');
-var _ = require('lodash');
-var myBucksData = require('./MyBucksStats.json');
+const _ = require('lodash');
+const myBucksData = require('./MyBucksStats.json');
 const fs = require('fs');
 const csv = require('fast-csv');
 const ws = fs.createWriteStream('myBucksStats.csv');
-// const ws = fs.createWriteStream('myBucksStats.csv');
-var hourDataArray = [];
 
+
+var hourDataArray = [];
 
 //set up express app
 const app = express()
@@ -282,7 +282,7 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
     var _day = startD.getDate();
     var _hours = startD.getHours();
 
-    var getFullDatetime = _year + "-" + _month + "-" + _day + "-" + _hours + " " + _hours + ":" + "00:00";
+    var getFullDatetime = _year + "-" + _month + "-" + _day + " " + " " + _hours + ":" + "00:00";
 
     startD.setHours(startD.getHours() + 1);
     resultingDelay = getDelayForHour(_day, _month, _year, _hours, "");
@@ -294,18 +294,17 @@ function getReportForMyBucksData(isYear, isMonth, isDay, isHour, thisYear, thisM
   }
   //converting the json to csv
   var csvData = Papa.unparse(resultDatetimeArray);
-  console.log(csvData);
+ console.log(csvData);
 
-  fs = require('fs');
   fs.writeFile('myBucksStats.csv', csvData, function(err) {
     if (err)
       return console.log(err);
-    console.log('success');
+   console.log('success');
   });
 
 
 }
-getReportForMyBucksData(2017, 12, 01, 12, 2017, 12, 01, 17, "");
+getReportForMyBucksData(2017, 12, 01, 00, 2018, 01, 01, 00, "");
 //2017/12/01 12:00:00   return => 0.92
 //2017/12/01 13:00:00   return => 3.17
 //2017/12/01 14:00:00   return => 1.54
