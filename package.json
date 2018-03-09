@@ -11,7 +11,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "lodash": "^4.17.5",
-    "moment": "^2.20.1"
+    "moment": "^2.20.1",
+    "nodemon": "^1.17.1"
   },
   "devDependencies": {
     "nodemon": "^1.14.11"
